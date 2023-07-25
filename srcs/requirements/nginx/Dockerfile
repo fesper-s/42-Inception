@@ -1,10 +1,14 @@
 FROM debian:bullseye
 
-RUN apt update
-RUN apt install -y nginx openssl
+RUN apt update && apt install nginx openssl -y
 
-COPY ./conf/nginx.conf /etc/nginx/conf.d
+RUN mkdir -p /etc/nginx/ssl
 
-EXPOSE 443
+RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=FR/ST=IDF/L=Paris/0=42/OU=42/CN=fesper-s.42.fr/UID=fesper-s"
 
-CMD ["nginx", "-g"; "daemon off;"]
+COPY conf/nginx.conf /etc/nginx/nginx.conf
+
+RUN chmod 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+
+CMD ["nginx", "-g", "daemon off;"]
