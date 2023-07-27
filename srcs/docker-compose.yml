@@ -17,7 +17,7 @@ services:
       - ./requirements/nginx/tools:/etc/nginx/ssl/
       - wp-volume:/var/www/
     restart: always
-  
+
   mariadb:
     build:
       context: .
@@ -49,10 +49,10 @@ services:
     networks:
       - inception
     volumes:
-      - wp-volumes:/var/www/
-  
+      - wp-volume:/var/www/
+
 volumes:
-  wp-volumes:
+  wp-volume:
     driver_opts:
       o: bind
       type: none
@@ -65,5 +65,5 @@ volumes:
       device: /home/${USER}/data/mariadb
 
 networks:
-  inception:
-    driver: bridge
+    inception:
+        driver: bridge
